@@ -41,4 +41,27 @@ pca_visualize_3d <- function(file_path = "test_data.csv", pc1 = 1, pc2 = 2, pc3 
     )
 }
 
-pca_visualize_3d()
+reverse_2d_pca <- function(x = 0, y = 0, file_path = "test_data.csv", pc1 = 1, pc2 = 2){
+    extract_info = extract_point_data(file_path)
+    coord_data <- extract_info$coord_data
+    color_data <- extract_info$color_data
+    color_indices <- extract_info$color_indices
+    pca <- prcomp(coord_data, scale = TRUE, center = TRUE)
+    reduce_data <- rep(0, ncol(coord_data))
+    reduce_data[pc1] = x
+    reduce_data[pc2] = y
+    return((reduce_data %*% t(pca$rotation)) * pca$scale + pca$center)
+}
+
+reverse_3d_pca <- function(x = 0, y = 0, z= 0, file_path = "test_data.csv", pc1 = 1, pc2 = 2, pc3 = 3){
+  extract_info = extract_point_data(file_path)
+  coord_data <- extract_info$coord_data
+  color_data <- extract_info$color_data
+  color_indices <- extract_info$color_indices
+  pca <- prcomp(coord_data, scale = TRUE, center = TRUE)
+  reduce_data <- rep(0, ncol(coord_data))
+  reduce_data[pc1] = x
+  reduce_data[pc2] = y
+  reduce_data[pc3] = z
+  return((reduce_data %*% t(pca$rotation)) * pca$scale + pca$center)
+}
